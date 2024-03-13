@@ -15,16 +15,29 @@ jobs:
       with:
         go-version: 1.21.7
 
-    - name: SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@v1
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: "http://localhost:9000"        
+    # - name: SonarQube Scan
+    #   uses: sonarsource/sonarqube-scan-action@v1
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #     SONAR_HOST_URL: "http://localhost:9000"        
 
-    - name: Build
+    - name: Build Go
       run: go build -v
 
-    - name: Test
+    - name: Test Go
       run: go test -v
+
+    - name: Build and Publish to Dockerhub
+      env:
+        GO_ENV: dev
+        DOCKERHUB_USERNAME: lvlal2iko
+        APP_NAME: mtl-app
+      run: |
+        echo Building the Docker image...
+        export IMAGE_TAG=$(echo $GO_ENV)-$(echo ${{GITHUB_SHA}} | cut -c 1-7)
+        docker build -t $APP_NAME:$IMAGE_TAG -f Dockerfile .
+        docker login --username $DOCKERHUB_USERNAME --password ${{ secrets.DOCKERHUB_TOKEN }}
+        docker tag $APP_NAME:$IMAGE_TAG $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
+        docker push $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
 
 
