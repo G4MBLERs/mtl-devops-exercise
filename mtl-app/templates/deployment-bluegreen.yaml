@@ -77,12 +77,14 @@ spec:
           threshold: 99
           interval: 60s
         args:
-          image: {{ .Values.blueGreen.analysisImage }}
+          - name: ANALYSIS_IMAGE
+            value: {{ .Values.analysisImage }}
       postPromotionAnalysis:
         metrics:
         - name: request-success-rate
           threshold: 99
           interval: 60s
         args:
-          image: {{ .Values.blueGreen.analysisImage }}
+          - name: ANALYSIS_IMAGE
+            value: {{ .Values.analysisImage }}
   minReadySeconds: 30
