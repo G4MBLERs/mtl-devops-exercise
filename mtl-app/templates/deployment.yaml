@@ -1,9 +1,9 @@
 {{- if eq .Values.deploymentStrategy "simple" }}
-{{ include "templates/deployment-simple.yaml" . | indent 2 }}
-{{- elseif eq .Values.deploymentStrategy "canary" }}
-{{ include "templates/deployment-canary.yaml" . | indent 2 }}
-{{- elseif eq .Values.deploymentStrategy "bluegreen" }}
-{{ include "templates/deployment-bluegreen.yaml" . | indent 2 }}
+{{ include "mtl-app/templates/deployment-simple.yaml" . }}
+{{- else if eq .Values.deploymentStrategy "canary" }}
+{{ include "mtl-app/templates/deployment-canary.yaml" . }}
+{{- else if eq .Values.deploymentStrategy "bluegreen" }}
+{{ include "mtl-app/templates/deployment-bluegreen.yaml" . }}
 {{- else }}
-{{ include "templates/deployment-simple.yaml" . | indent 2 }}
+{{ include "templates/deployment-simple.yaml" . }}
 {{- end }}

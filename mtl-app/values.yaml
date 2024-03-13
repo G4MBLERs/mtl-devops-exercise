@@ -10,8 +10,14 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: dev-1d97d62
   
-  
+
 deploymentStrategy: simple 
+
+blueGreen:
+  activeService: mtl-app-active-service
+  previewService: mtl-app-preview-service
+  autoPromotionEnabled: true
+  analysisImage: lvlal2iko/mtl-app
 
 imagePullSecrets: []
 nameOverride: ""
