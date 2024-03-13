@@ -34,7 +34,7 @@ jobs:
         APP_NAME: mtl-app
       run: |
         echo Building the Docker image...
-        export IMAGE_TAG=$(echo $GO_ENV)-$(echo ${{GITHUB_SHA}} | cut -c 1-7)
+        export IMAGE_TAG=$(echo $GO_ENV)-$(echo ${GITHUB_SHA} | cut -c 1-7)
         docker build -t $APP_NAME:$IMAGE_TAG -f Dockerfile .
         docker login --username $DOCKERHUB_USERNAME --password ${{ secrets.DOCKERHUB_TOKEN }}
         docker tag $APP_NAME:$IMAGE_TAG $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
