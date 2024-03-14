@@ -8,7 +8,7 @@ image:
   repository: lvlal2iko/mtl-app
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: dev-e1bd340
+  tag: dev-a9b06b8
   
 
 deploymentStrategy: simple 
