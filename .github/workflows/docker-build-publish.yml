@@ -28,6 +28,7 @@ jobs:
       run: go test -v
 
     - name: Build and Publish to Dockerhub
+      id: step1
       env:
         GO_ENV: dev
         DOCKERHUB_USERNAME: lvlal2iko
@@ -39,10 +40,12 @@ jobs:
         docker login --username $DOCKERHUB_USERNAME --password ${{ secrets.DOCKERHUB_TOKEN }}
         docker tag $APP_NAME:$IMAGE_TAG $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
         docker push $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
+        echo "::set-output name=image_tag::$IMAGE_TAG"
+        echo "::set-output name=image_name_tag::$DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
 
     - name: Update new image tag in values.yaml
       run: |
-          sed -i 's/^ *tag: .*/  tag: $IMAGE_TAG/' mtl-app/values.yaml
+          sed -i 's/^ *tag: .*/  tag: ${{ steps.step1.outputs.image_tag }}/' mtl-app/values.yaml
 
     # - name: Commit changes
     #   run: |
@@ -57,6 +60,6 @@ jobs:
       uses: devops-infra/action-commit-push@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        commit_message: "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
+        commit_message: "Update values.yaml with ${{ steps.step1.outputs.image_name_tag }}"
 
 
