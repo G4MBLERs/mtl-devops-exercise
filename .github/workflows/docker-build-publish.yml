@@ -40,4 +40,20 @@ jobs:
         docker tag $APP_NAME:$IMAGE_TAG $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
         docker push $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
 
+    - name: Update new image tag in values.yaml
+      run: |
+          sed -i 's/^ *tag: .*/  tag: $IMAGE_TAG/' mtl-app/values.yaml
+
+    - name: Commit changes
+      run: |
+          git config --global user.email "gam.panassitanon@gmail.com"
+          git config --global user.name "gamblers"
+          git add mtl-app/values.yaml
+          git commit -m "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
 
