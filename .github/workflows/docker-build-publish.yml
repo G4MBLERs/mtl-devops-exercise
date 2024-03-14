@@ -44,15 +44,19 @@ jobs:
       run: |
           sed -i 's/^ *tag: .*/  tag: $IMAGE_TAG/' mtl-app/values.yaml
 
-    - name: Commit changes
-      run: |
-          git config --global user.email "lvlal2iko@gmail.com"
-          git add mtl-app/values.yaml
-          git commit -m "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
+    # - name: Commit changes
+    #   run: |
+    #       git pull origin main
+    #       git config --global user.email "lvlal2iko@gmail.com"
+    #       git config --global user.name "G4MBLERs"
+    #       git add mtl-app/values.yaml
+    #       git commit -m "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
+          
         
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: devops-infra/action-commit-push@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        commit_message: "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
 
 
