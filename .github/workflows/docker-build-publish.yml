@@ -46,9 +46,6 @@ jobs:
 
     - name: Commit changes
       run: |
-          git config --global user.email "gam.panassitanon@gmail.com"
-          git config --global user.name "gamblers"
-          git pull --rebase
           git add mtl-app/values.yaml
           git commit -m "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
         
