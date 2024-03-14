@@ -47,6 +47,7 @@ jobs:
     - name: Commit changes
       run: |
           git config --global user.email "lvlal2iko@gmail.com"
+          git config user.name "G4MBLERs"
           git add mtl-app/values.yaml
           git commit -m "Update values.yaml with $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"
         
